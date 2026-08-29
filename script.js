@@ -600,3 +600,42 @@ async function processBotResponse(userText) {
         appendMessage(getFallbackResponse(userText), 'bot');
     }
 }
+// Typing indicator
+function showTypingIndicator() {
+    const messagesContainer = document.getElementById('chatMessages');
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot-message typing-indicator';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.innerHTML = '<span></span><span></span><span></span>';
+    
+    const chips = messagesContainer.querySelector('.chat-chips');
+    if (chips) {
+        messagesContainer.insertBefore(typingDiv, chips);
+    } else {
+        messagesContainer.appendChild(typingDiv);
+    }
+    
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const typingIndicator = document.getElementById('typingIndicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
+// Yedek yanıtlar
+function getFallbackResponse(userText) {
+    const text = userText.toLowerCase();
+    
+    if (text.includes('merhaba') || text.includes('selam')) {
+        return 'Merhaba! Size nasıl yardımcı olabilirim?';
+    } else if (text.includes('devamsızlık') || text.includes('katılım')) {
+        return 'Katılım durumunuzu sol menüden "Katılım Durumu" sekmesinden sorgulayabilirsiniz.';
+    } else if (text.includes('sertifika')) {
+        return 'Sertifika için %80 devam zorunluluğu var. Sertifika Süreci sekmesinden alabilirsiniz.';
+    } else {
+        return 'Detaylı bilgi için iletisim@kapsul.org.tr adresine mail atabilirsiniz.';
+    }
+}
