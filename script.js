@@ -82,6 +82,13 @@ function initNavigation() {
 
     navItems.forEach(item => {
         item.addEventListener('click', () => {
+            const requiresAuth = item.getAttribute('data-auth') === 'required';
+            
+            if (requiresAuth && !isLoggedIn) {
+                showAuthRequiredModal();
+                return;
+            }
+            
             navItems.forEach(nav => nav.classList.remove('active'));
             item.classList.add('active');
             viewSections.forEach(view => {
@@ -210,30 +217,86 @@ function initSearch() {
     }
 }
 
+// ============ AUTH MODAL ============
+
 function showLoginModal() {
     document.getElementById('authModal').classList.remove('hidden');
+    switchAuthForm('login');
+}
+
+function showRegisterModal() {
+    document.getElementById('authModal').classList.remove('hidden');
+    switchAuthForm('register');
 }
 
 function closeAuthModal() {
     document.getElementById('authModal').classList.add('hidden');
 }
 
+function switchAuthForm(formType) {
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const title = document.getElementById('authModalTitle');
+    
+    if (formType === 'login') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        title.textContent = 'Giriş Yap';
+    } else {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        title.textContent = 'Kayıt Ol';
+    }
+}
+
+function showAuthRequiredModal() {
+    document.getElementById('authRequiredModal').classList.remove('hidden');
+}
+
+function closeAuthRequiredModal() {
+    document.getElementById('authRequiredModal').classList.add('hidden');
+}
+
 function loginUser() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    
+    if (!email || !password) {
+        alert('Lütfen tüm alanları doldurun.');
+        return;
+    }
+    
     isLoggedIn = true;
-    currentUser.name = "Kapsüllü";
+    currentUser.name = email.split('@')[0];
     currentUser.role = "Kapsül Akademisyeni";
+    
     updateUIForAuth();
     closeAuthModal();
-    showToast("Hoş geldin!", "fa-right-to-bracket");
+    showToast(`Hoş geldin, ${currentUser.name}!`, "fa-right-to-bracket");
 }
 
 function registerUser() {
+    const name = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const password = document.getElementById('registerPassword').value;
+    
+    if (!name || !email || !password) {
+        alert('Lütfen tüm alanları doldurun.');
+        return;
+    }
+    
+    if (password.length < 6) {
+        alert('Şifre en az 6 karakter olmalıdır.');
+        return;
+    }
+    
     isLoggedIn = true;
-    currentUser.name = "Yeni Öğrenci";
+    currentUser.name = name;
     currentUser.role = "Kapsül Öğrencisi";
+    
     updateUIForAuth();
     closeAuthModal();
-    showToast("Kayıt tamamlandı!", "fa-user-plus");
+    showToast(`Kayıt tamamlandı. Hoş geldiniz, ${name}!`, "fa-user-plus");
 }
 
 function updateUIForAuth() {
@@ -241,16 +304,25 @@ function updateUIForAuth() {
     document.getElementById('userButtons').style.display = 'flex';
     document.getElementById('userNameDisplay').textContent = currentUser.name;
     document.getElementById('userRoleDisplay').textContent = currentUser.role;
+    document.getElementById('welcomeUser').textContent = currentUser.name;
+    document.getElementById('attendanceStat').textContent = '%85';
+    document.getElementById('attendanceMessage').textContent = 'Sertifika için yeterli seviyedesiniz.';
 }
 
 function logoutUser() {
     isLoggedIn = false;
+    currentUser = { name: 'Misafir', email: '', gender: 'default', role: 'Giriş Yapmadınız' };
     document.getElementById('authButtons').style.display = 'flex';
     document.getElementById('userButtons').style.display = 'none';
     document.getElementById('userNameDisplay').textContent = 'Misafir';
     document.getElementById('userRoleDisplay').textContent = 'Giriş Yapmadınız';
+    document.getElementById('welcomeUser').textContent = 'Kapsüllü!';
+    document.getElementById('attendanceStat').textContent = '%0';
+    document.getElementById('attendanceMessage').textContent = 'Sertifika için giriş yapın.';
     showToast("Çıkış yapıldı.", "fa-right-from-bracket");
 }
+
+// ============ PROGRAM MODAL ============
 
 function showProgramDetails(programId) {
     const data = programsData[programId];
@@ -266,6 +338,14 @@ function showProgramDetails(programId) {
 function closeModal() {
     document.getElementById('programModal').classList.add('hidden');
 }
+
+function applyToProgram() {
+    const title = document.getElementById('modalTitle').textContent;
+    closeModal();
+    showToast(`"${title}" programına başvurunuz alındı!`, "fa-paper-plane");
+}
+
+// ============ ATTENDANCE ============
 
 function checkAttendance() {
     const input = document.getElementById('studentIdInput').value.trim().toUpperCase();
@@ -293,6 +373,8 @@ function checkAttendance() {
         circle.style.strokeDashoffset = offset;
     }, 100);
 }
+
+// ============ CERTIFICATE ============
 
 function generateCertificate() {
     const name = document.getElementById('certNameInput').value.trim();
