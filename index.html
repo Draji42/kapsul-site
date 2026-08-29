@@ -43,7 +43,7 @@
             </nav>
             <div class="sidebar-footer" id="userProfile">
                 <div class="user-profile" id="userProfileContent">
-                    <img src="https://i.pravatar.cc/150?img=11" alt="Profil" id="userAvatar">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2327272a'/><circle cx='50' cy='40' r='18' fill='%23a1a1aa'/><path d='M24 84 C24 65 36 58 50 58 C64 58 76 65 76 84 Z' fill='%23a1a1aa'/></svg>" alt="Profil" id="userAvatar">
                     <div class="user-info">
                         <span class="user-name" id="userNameDisplay">Misafir</span>
                         <span class="user-role" id="userRoleDisplay">Giriş Yapmadınız</span>
@@ -345,6 +345,14 @@
                     <div class="modal-detail">
                         <span class="modal-label">👤 Ad Soyad</span>
                         <input type="text" id="registerName" placeholder="Adınız Soyadınız" class="auth-input">
+                    </div>
+                    <div class="modal-detail">
+                        <span class="modal-label">⚧ Cinsiyet</span>
+                        <select id="registerGender" class="auth-input" style="cursor:pointer;">
+                            <option value="erkek" style="background:#18181b;color:#fff;">Erkek</option>
+                            <option value="kadin" style="background:#18181b;color:#fff;">Kadın</option>
+                            <option value="diger" style="background:#18181b;color:#fff;">Belirtmek İstemiyorum</option>
+                        </select>
                     </div>
                     <div class="modal-detail">
                         <span class="modal-label">📧 E-posta</span>
