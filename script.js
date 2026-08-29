@@ -567,38 +567,41 @@ function appendMessage(text, sender) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-function processBotResponse(userText) {
-    const text = userText.toLowerCase();
-    let reply = "Bu konuda sana net bir bilgi veremiyorum ancak iletisim@kapsul.org.tr adresine mail atarak detaylı bilgi alabilirsin.";
-
-    // Simulated Typing Indicator
-    const messagesContainer = document.getElementById('chatMessages');
-    const typingIndicator = document.createElement('div');
-    typingIndicator.className = 'message bot-message typing-indicator';
-    typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+// Chatbot Logic - Render Backend ile
+async function processBotResponse(userText) {
+    console.log('Bot yanıtı işleniyor:', userText);
     
-    const chips = messagesContainer.querySelector('.chat-chips');
-    if (chips) {
-        messagesContainer.insertBefore(typingIndicator, chips);
-    } else {
-        messagesContainer.appendChild(typingIndicator);
-    }
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    showTypingIndicator();
+    
+    try {
+        // Render backend'e istek at
+        const response = await fetch('https://kapsul-backend.onrender.com/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: userText
+            })
+        });
 
-    if (text.includes('devamsızlık') || text.includes('katılım')) {
-        reply = "Katılım durumunu sorgulamak için sol menüden 'Katılım Durumu' sekmesine giderek öğrenci numaranı (Örn: K-1024) girebilirsin. Not: Bu sekme için giriş yapmanız gerekir.";
-    } else if (text.includes('sertifika')) {
-        reply = "Sertifika alabilmek için programlarda %80 devam zorunluluğunu sağlaman gerekiyor. Hak kazandığında 'Sertifika Süreci' sekmesinden belgeni alabilirsin.";
-    } else if (text.includes('takvim') || text.includes('ne zaman')) {
-        reply = "Tüm eğitim ve etkinlik takvimini 'Eğitim Takvimi' sekmesinden aylık olarak görebilirsin. Yaklaşan eğitimleri anasayfada da listeliyoruz.";
-    } else if (text.includes('merhaba') || text.includes('selam')) {
-        reply = "Merhaba! Kapsül Asistan'a hoş geldin. Giriş yaptıktan sonra katılımını veya sertifika sürecini de yönetebilirsin. Sana nasıl yardımcı olabilirim?";
-    } else if (text.includes('program') || text.includes('eğitimler')) {
-        reply = "Kapsül Rota Gelişim, BİSTLAB, Akıllı Şehirler Lab gibi birçok programımız var. Sol menüden 'Programlar' sekmesine göz atmalısın.";
-    }
+        const data = await response.json();
+        
+        removeTypingIndicator();
+        
+        if (data.reply) {
+            appendMessage(data.reply, 'bot');
+        } else {
+            throw new Error(data.error || 'Cevap alınamadı');
+        }
 
-    setTimeout(() => {
-        typingIndicator.remove();
-        appendMessage(reply, 'bot');
-    }, 1200);
+    } catch (error) {
+        console.error('Chat hatası:', error);
+        removeTypingIndicator();
+        
+        const fallbackReply = getFallbackResponse(userText);
+        appendMessage(fallbackReply, 'bot');
+        
+        showToast('AI servisi şu anda uyuyor, temel yanıtlar veriliyor.');
+    }
 }
