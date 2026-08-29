@@ -6,7 +6,6 @@ const AVATARS = {
     diger: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2327272a'/><circle cx='50' cy='40' r='18' fill='%23a1a1aa'/><path d='M24 84 C24 65 36 58 50 58 C64 58 76 65 76 84 Z' fill='%23a1a1aa'/></svg>"
 };
 
-// Global State
 let isLoggedIn = false;
 let currentUser = {
     name: 'Misafir',
@@ -16,11 +15,10 @@ let currentUser = {
 };
 let isLightTheme = false;
 
-// Mock Program Data
 const programsData = {
     1: {
         title: "Kapsül Rota Gelişim",
-        description: "Katılımcıların teknoloji okuryazarlığı, algoritmik düşünme, yapay zeka ve temel yazılım gelişim süreçlerini destekleyen bütüncül bir eğitim modelidir. Algoritma mantığından başlayarak temel web teknolojilerine kadar geniş bir müfredat sunar.",
+        description: "Katılımcıların teknoloji okuryazarlığı, algoritmik düşünme, yapay zeka ve temel yazılım gelişim süreçlerini destekleyen bütüncül bir eğitim modelidir.",
         dateTime: "Pazartesi & Çarşamba, 18:30 - 21:30",
         instructor: "Dr. Ahmet Yılmaz & Mentör Kadrosu",
         capacity: "120 Kişi (Kalan Kontenjan: 12)",
@@ -28,7 +26,7 @@ const programsData = {
     },
     2: {
         title: "Akıllı Şehirler Lab",
-        description: "IoT, gömülü sistemler, mikrodenetleyiciler ve sensör ağları üzerine odaklanan uygulamalı laboratuvar çalışmasıdır. Akıllı sensörler kullanarak modern şehir yaşamını kolaylaştıran IoT çözümleri geliştirilir.",
+        description: "IoT, gömülü sistemler, mikrodenetleyiciler ve sensör ağları üzerine odaklanan uygulamalı laboratuvar çalışmasıdır.",
         dateTime: "Salı & Perşembe, 14:00 - 17:00",
         instructor: "Müh. Mehmet Demir",
         capacity: "30 Kişi (Kalan Kontenjan: Dolu)",
@@ -44,7 +42,7 @@ const programsData = {
     },
     4: {
         title: "Tasarım Lab",
-        description: "UI/UX tasarımı, endüstriyel tasarım, tasarım odaklı düşünme (design thinking) ve yaratıcı süreçlerin ele alındığı, prototipleme odaklı eğitim ve proje geliştirme programıdır.",
+        description: "UI/UX tasarımı, endüstriyel tasarım, tasarım odaklı düşünme ve yaratıcı süreçlerin ele alındığı programdır.",
         dateTime: "Cumartesi, 11:00 - 15:00",
         instructor: "Tasarımcı Sibel Can",
         capacity: "40 Kişi (Kalan Kontenjan: 15)",
@@ -52,7 +50,6 @@ const programsData = {
     }
 };
 
-// DOM Content Loaded
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initAccordion();
@@ -61,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearch();
 });
 
-// Create Toast Messages
 function showToast(message, icon = "fa-info-circle") {
     let container = document.querySelector('.toast-container');
     if (!container) {
@@ -73,56 +69,34 @@ function showToast(message, icon = "fa-info-circle") {
     toast.className = 'toast';
     toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
     container.appendChild(toast);
-    
-    // Animate in
     setTimeout(() => toast.classList.add('show'), 10);
-    
-    // Remove after 3s
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
-// Navigation Logic
 function initNavigation() {
     const navItems = document.querySelectorAll('.nav-menu .nav-item');
     const viewSections = document.querySelectorAll('.view-section');
 
     navItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            const targetId = item.getAttribute('data-target');
-            const requiresAuth = item.getAttribute('data-auth') === 'required';
-
-            if (requiresAuth && !isLoggedIn) {
-                e.preventDefault();
-                showAuthRequiredModal();
-                return;
-            }
-
-            // Remove active from all nav items
+        item.addEventListener('click', () => {
             navItems.forEach(nav => nav.classList.remove('active'));
-            // Add active to clicked nav item
             item.classList.add('active');
-
-            // Hide all views
             viewSections.forEach(view => {
                 view.classList.remove('active');
                 view.classList.add('hidden');
             });
-
-            // Show target view
+            const targetId = item.getAttribute('data-target');
             const targetView = document.getElementById(targetId);
             if (targetView) {
                 targetView.classList.remove('hidden');
-                setTimeout(() => {
-                    targetView.classList.add('active');
-                }, 10);
+                setTimeout(() => targetView.classList.add('active'), 10);
             }
         });
     });
 
-    // Make sure non-dashboard views are hidden initially
     viewSections.forEach(view => {
         if(view.id !== 'dashboard') {
             view.classList.add('hidden');
@@ -131,18 +105,15 @@ function initNavigation() {
     });
 }
 
-// Accordion Logic
 function initAccordion() {
     const headers = document.querySelectorAll('.accordion-header');
     headers.forEach(header => {
         header.addEventListener('click', () => {
-            const item = header.parentElement;
-            item.classList.toggle('active');
+            header.parentElement.classList.toggle('active');
         });
     });
 }
 
-// Theme Toggle
 function initThemeToggle() {
     const themeBtn = document.getElementById('themeToggleBtn');
     if (themeBtn) {
@@ -151,19 +122,16 @@ function initThemeToggle() {
             if (isLightTheme) {
                 document.body.classList.add('light-theme');
                 themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-                themeBtn.title = "Koyu Tema";
                 showToast("Açık tema aktif edildi.", "fa-sun");
             } else {
                 document.body.classList.remove('light-theme');
                 themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-                themeBtn.title = "Açık Tema";
                 showToast("Koyu tema aktif edildi.", "fa-moon");
             }
         });
     }
 }
 
-// Notification Dropdown Toggle
 function initNotificationToggle() {
     const notificationBtn = document.getElementById('notificationBtn');
     if (notificationBtn) {
@@ -174,8 +142,6 @@ function initNotificationToggle() {
                 dropdown.remove();
                 return;
             }
-
-            // Create dropdown dynamically
             dropdown = document.createElement('div');
             dropdown.className = 'notification-dropdown glass-panel';
             dropdown.innerHTML = `
@@ -187,7 +153,7 @@ function initNotificationToggle() {
                     <div class="notification-item unread">
                         <div class="notification-icon"><i class="fa-solid fa-bullhorn"></i></div>
                         <div class="notification-content">
-                            <p><strong>TEKNOFEST 2026</strong> başvuruları başladı! Son gün 25 Ekim.</p>
+                            <p><strong>TEKNOFEST 2026</strong> başvuruları başladı!</p>
                             <span class="notification-time">2 saat önce</span>
                         </div>
                     </div>
@@ -211,8 +177,6 @@ function initNotificationToggle() {
                 </div>
             `;
             document.body.appendChild(dropdown);
-
-            // Close when clicking outside
             document.addEventListener('click', closeDropdownOutside);
         });
     }
@@ -228,219 +192,74 @@ function closeDropdownOutside(e) {
 }
 
 function markAllNotificationsRead() {
-    const unreadItems = document.querySelectorAll('.notification-item.unread');
-    unreadItems.forEach(item => {
+    document.querySelectorAll('.notification-item.unread').forEach(item => {
         item.classList.remove('unread');
         item.classList.add('read');
     });
     const badge = document.querySelector('#notificationBtn .badge');
     if (badge) badge.remove();
-    const count = document.querySelector('.notification-count');
-    if (count) count.textContent = "0 Yeni";
     showToast("Tüm bildirimler okundu işaretlendi.", "fa-check");
 }
 
-// Search Functionality
 function initSearch() {
     const searchInput = document.querySelector('.search-bar input');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            if (query === '') return;
-            
-            // Just basic mock feedback
-            console.log("Aranan:", query);
+            console.log("Aranan:", e.target.value);
         });
     }
 }
 
-// Auth Modals logic
 function showLoginModal() {
-    const modal = document.getElementById('authModal');
-    modal.classList.remove('hidden');
-    switchAuthForm('login');
-}
-
-function showRegisterModal() {
-    const modal = document.getElementById('authModal');
-    modal.classList.remove('hidden');
-    switchAuthForm('register');
+    document.getElementById('authModal').classList.remove('hidden');
 }
 
 function closeAuthModal() {
     document.getElementById('authModal').classList.add('hidden');
 }
 
-function switchAuthForm(formType) {
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const title = document.getElementById('authModalTitle');
-
-    if (formType === 'login') {
-        loginForm.style.display = 'block';
-        registerForm.style.display = 'none';
-        title.textContent = "Giriş Yap";
-    } else {
-        loginForm.style.display = 'none';
-        registerForm.style.display = 'block';
-        title.textContent = "Kayıt Ol";
-    }
-}
-
-// Auth Required Modal
-function showAuthRequiredModal() {
-    document.getElementById('authRequiredModal').classList.remove('hidden');
-}
-
-function closeAuthRequiredModal() {
-    document.getElementById('authRequiredModal').classList.add('hidden');
-}
-
-// Simulated Login / Registration Actions
 function loginUser() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-
-    if (!email || !password) {
-        alert("Lütfen tüm alanları doldurun.");
-        return;
-    }
-
-    // Set logged in user info
     isLoggedIn = true;
-    currentUser.name = email.split('@')[0];
-    currentUser.name = currentUser.name.charAt(0).toUpperCase() + currentUser.name.slice(1);
-    currentUser.email = email;
-    if (!currentUser.gender || currentUser.gender === 'default') {
-        currentUser.gender = 'erkek';
-    }
+    currentUser.name = "Kapsüllü";
     currentUser.role = "Kapsül Akademisyeni";
-
     updateUIForAuth();
     closeAuthModal();
-    showToast(`Hoş geldin, ${currentUser.name}!`, "fa-right-to-bracket");
+    showToast("Hoş geldin!", "fa-right-to-bracket");
 }
 
 function registerUser() {
-    const name = document.getElementById('registerName').value.trim();
-    const genderEl = document.getElementById('registerGender');
-    const gender = genderEl ? genderEl.value : 'default';
-    const email = document.getElementById('registerEmail').value.trim();
-    const password = document.getElementById('registerPassword').value;
-
-    if (!name || !email || !password) {
-        alert("Lütfen tüm alanları doldurun.");
-        return;
-    }
-
-    if (password.length < 6) {
-        alert("Şifre en az 6 karakter olmalıdır.");
-        return;
-    }
-
-    // Register & Login user mock
     isLoggedIn = true;
-    currentUser.name = name;
-    currentUser.email = email;
-    currentUser.gender = gender;
+    currentUser.name = "Yeni Öğrenci";
     currentUser.role = "Kapsül Öğrencisi";
-
     updateUIForAuth();
     closeAuthModal();
-    showToast(`Kaydınız tamamlandı. Hoş geldiniz, ${currentUser.name}!`, "fa-user-plus");
+    showToast("Kayıt tamamlandı!", "fa-user-plus");
 }
 
 function updateUIForAuth() {
-    // Header UI updates
     document.getElementById('authButtons').style.display = 'none';
     document.getElementById('userButtons').style.display = 'flex';
-
-    // Sidebar footer updates
     document.getElementById('userNameDisplay').textContent = currentUser.name;
     document.getElementById('userRoleDisplay').textContent = currentUser.role;
-    
-    // Set Gender-based Anonymous Avatar
-    const avatarSrc = AVATARS[currentUser.gender] || AVATARS.default;
-    const userAvatarEl = document.getElementById('userAvatar');
-    if (userAvatarEl) {
-        userAvatarEl.src = avatarSrc;
-    }
-    
-    // Dashboard Stats update
-    document.getElementById('welcomeUser').textContent = currentUser.name;
-    document.getElementById('attendanceStat').textContent = "%85";
-    const attendanceMessage = document.getElementById('attendanceMessage');
-    if (attendanceMessage) {
-        attendanceMessage.textContent = "Sertifika için yeterli seviyedesiniz.";
-    }
-
-    // Setup logout event
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.onclick = logoutUser;
-    }
 }
 
 function logoutUser() {
     isLoggedIn = false;
-    currentUser = { name: 'Misafir', email: '', gender: 'default', role: 'Giriş Yapmadınız' };
-
-    // Reset UI to guest mode
     document.getElementById('authButtons').style.display = 'flex';
     document.getElementById('userButtons').style.display = 'none';
-
-    document.getElementById('userNameDisplay').textContent = currentUser.name;
-    document.getElementById('userRoleDisplay').textContent = currentUser.role;
-    
-    // Reset to default anonymous avatar
-    const userAvatarEl = document.getElementById('userAvatar');
-    if (userAvatarEl) {
-        userAvatarEl.src = AVATARS.default;
-    }
-
-    document.getElementById('welcomeUser').textContent = "Kapsüllü!";
-    document.getElementById('attendanceStat').textContent = "%0";
-    const attendanceMessage = document.getElementById('attendanceMessage');
-    if (attendanceMessage) {
-        attendanceMessage.textContent = "Sertifika için giriş yapın.";
-    }
-
-    // Reset current active page to Dashboard if we are on a protected page
-    const activeNav = document.querySelector('.nav-item.active');
-    if (activeNav && activeNav.getAttribute('data-auth') === 'required') {
-        document.querySelector('.nav-item[data-target="dashboard"]').click();
-    }
-
-    showToast("Güvenle çıkış yapıldı.", "fa-right-from-bracket");
+    document.getElementById('userNameDisplay').textContent = 'Misafir';
+    document.getElementById('userRoleDisplay').textContent = 'Giriş Yapmadınız';
+    showToast("Çıkış yapıldı.", "fa-right-from-bracket");
 }
 
-// Program Details Modal Logic
 function showProgramDetails(programId) {
     const data = programsData[programId];
     if (!data) return;
-
     document.getElementById('modalTitle').textContent = data.title;
     document.getElementById('modalDescription').textContent = data.description;
     document.getElementById('modalDateTime').textContent = data.dateTime;
     document.getElementById('modalInstructor').textContent = data.instructor;
     document.getElementById('modalCapacity').textContent = data.capacity;
-    
-    const statusEl = document.getElementById('modalStatus');
-    statusEl.innerHTML = '';
-    const badge = document.createElement('span');
-    badge.className = 'status-badge';
-    badge.textContent = data.status;
-
-    if (data.status === 'Aktif') {
-        badge.classList.add('status-active');
-    } else if (data.status === 'Dolu') {
-        badge.classList.add('status-full');
-    } else {
-        badge.classList.add('status-upcoming');
-    }
-    statusEl.appendChild(badge);
-
-    // Show modal
     document.getElementById('programModal').classList.remove('hidden');
 }
 
@@ -448,36 +267,17 @@ function closeModal() {
     document.getElementById('programModal').classList.add('hidden');
 }
 
-function applyToProgram() {
-    const title = document.getElementById('modalTitle').textContent;
-    closeModal();
-    showToast(`"${title}" programına başvurunuz başarıyla alındı!`, "fa-paper-plane");
-}
-
-// Attendance Mock Logic
 function checkAttendance() {
     const input = document.getElementById('studentIdInput').value.trim().toUpperCase();
     const resultDiv = document.getElementById('attendanceResult');
-    
     if (input === '') {
-        alert('Lütfen geçerli bir Kapsül / Öğrenci numarası girin. Örn: K-1024');
+        alert('Lütfen geçerli bir numara girin. Örn: K-1024');
         return;
     }
-
     resultDiv.classList.remove('hidden');
     const percentageEl = document.getElementById('attendancePercentage');
     const circle = document.getElementById('progressCircle');
-    
-    let percentage = 0;
-    
-    if (input === 'K-1024') {
-        percentage = 85;
-    } else if (input === 'K-2048') {
-        percentage = 95;
-    } else {
-        percentage = Math.floor(Math.random() * 40) + 60; // Random between 60 and 100
-    }
-
+    let percentage = input === 'K-1024' ? 85 : input === 'K-2048' ? 95 : Math.floor(Math.random() * 40) + 60;
     let current = 0;
     const interval = setInterval(() => {
         if (current >= percentage) {
@@ -487,7 +287,6 @@ function checkAttendance() {
             percentageEl.textContent = `%${current}`;
         }
     }, 15);
-
     const circumference = 314;
     const offset = circumference - (percentage / 100) * circumference;
     setTimeout(() => {
@@ -495,28 +294,20 @@ function checkAttendance() {
     }, 100);
 }
 
-// Certificate Generator Logic
 function generateCertificate() {
     const name = document.getElementById('certNameInput').value.trim();
     const program = document.getElementById('certProgramSelect').value;
-    
     if (name === '') {
-        alert('Lütfen sertifika üzerinde yazacak adınızı girin.');
+        alert('Lütfen adınızı girin.');
         return;
     }
-
-    const preview = document.getElementById('certificatePreview');
-    const nameDisplay = document.getElementById('certNameDisplay');
-    const programDisplay = document.getElementById('certProgramDisplay');
-
-    nameDisplay.textContent = name;
-    programDisplay.textContent = program;
-
-    preview.classList.remove('hidden');
-    preview.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('certNameDisplay').textContent = name;
+    document.getElementById('certProgramDisplay').textContent = program;
+    document.getElementById('certificatePreview').classList.remove('hidden');
 }
 
-// Chatbot Logic
+// ============ CHATBOT ============
+
 function toggleChat() {
     const chatWindow = document.getElementById('chatbotWindow');
     chatWindow.classList.toggle('hidden');
@@ -539,12 +330,9 @@ function sendChipMessage(text) {
 function sendChatMessage() {
     const inputField = document.getElementById('chatInput');
     const text = inputField.value.trim();
-    
     if (text === '') return;
-    
     appendMessage(text, 'user');
     inputField.value = '';
-    
     processBotResponse(text);
 }
 
@@ -552,24 +340,53 @@ function appendMessage(text, sender) {
     const messagesContainer = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}-message`;
-    
     const p = document.createElement('p');
     p.textContent = text;
     messageDiv.appendChild(p);
-    
     const chips = messagesContainer.querySelector('.chat-chips');
     if (chips) {
         messagesContainer.insertBefore(messageDiv, chips);
     } else {
         messagesContainer.appendChild(messageDiv);
     }
-    
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function showTypingIndicator() {
+    const messagesContainer = document.getElementById('chatMessages');
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot-message typing-indicator';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.innerHTML = '<span></span><span></span><span></span>';
+    const chips = messagesContainer.querySelector('.chat-chips');
+    if (chips) {
+        messagesContainer.insertBefore(typingDiv, chips);
+    } else {
+        messagesContainer.appendChild(typingDiv);
+    }
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const typingIndicator = document.getElementById('typingIndicator');
+    if (typingIndicator) typingIndicator.remove();
+}
+
+function getFallbackResponse(userText) {
+    const text = userText.toLowerCase();
+    if (text.includes('merhaba') || text.includes('selam')) {
+        return 'Merhaba! Size nasıl yardımcı olabilirim?';
+    } else if (text.includes('devamsızlık') || text.includes('katılım')) {
+        return 'Katılım durumunuzu sol menüden sorgulayabilirsiniz.';
+    } else if (text.includes('sertifika')) {
+        return 'Sertifika için %80 devam zorunluluğu var.';
+    } else {
+        return 'Detaylı bilgi için iletisim@kapsul.org.tr adresine mail atabilirsiniz.';
+    }
 }
 
 async function processBotResponse(userText) {
     console.log('Mesaj gönderiliyor:', userText);
-    
     showTypingIndicator();
     
     try {
@@ -591,51 +408,12 @@ async function processBotResponse(userText) {
         if (data.reply) {
             appendMessage(data.reply, 'bot');
         } else {
-            appendMessage('Cevap alınamadı', 'bot');
+            appendMessage(getFallbackResponse(userText), 'bot');
         }
 
     } catch (error) {
         console.error('Hata:', error);
         removeTypingIndicator();
         appendMessage(getFallbackResponse(userText), 'bot');
-    }
-}
-// Typing indicator
-function showTypingIndicator() {
-    const messagesContainer = document.getElementById('chatMessages');
-    const typingDiv = document.createElement('div');
-    typingDiv.className = 'message bot-message typing-indicator';
-    typingDiv.id = 'typingIndicator';
-    typingDiv.innerHTML = '<span></span><span></span><span></span>';
-    
-    const chips = messagesContainer.querySelector('.chat-chips');
-    if (chips) {
-        messagesContainer.insertBefore(typingDiv, chips);
-    } else {
-        messagesContainer.appendChild(typingDiv);
-    }
-    
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function removeTypingIndicator() {
-    const typingIndicator = document.getElementById('typingIndicator');
-    if (typingIndicator) {
-        typingIndicator.remove();
-    }
-}
-
-// Yedek yanıtlar
-function getFallbackResponse(userText) {
-    const text = userText.toLowerCase();
-    
-    if (text.includes('merhaba') || text.includes('selam')) {
-        return 'Merhaba! Size nasıl yardımcı olabilirim?';
-    } else if (text.includes('devamsızlık') || text.includes('katılım')) {
-        return 'Katılım durumunuzu sol menüden "Katılım Durumu" sekmesinden sorgulayabilirsiniz.';
-    } else if (text.includes('sertifika')) {
-        return 'Sertifika için %80 devam zorunluluğu var. Sertifika Süreci sekmesinden alabilirsiniz.';
-    } else {
-        return 'Detaylı bilgi için iletisim@kapsul.org.tr adresine mail atabilirsiniz.';
     }
 }
