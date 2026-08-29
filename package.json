@@ -1,0 +1,13 @@
+{
+  "name": "kapsul-backend",
+  "version": "1.0.0",
+  "description": "Kapsul AI Backend",
+  "main": "backend.js",
+  "scripts": {
+    "start": "node backend.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
