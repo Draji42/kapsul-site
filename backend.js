@@ -18,7 +18,17 @@ const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 app.get('/', (req, res) => {
     res.json({
         message: 'Kapsül AI Backend çalışıyor!',
-        status: 'active'
+        status: 'active',
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ 
+        status: 'healthy', 
+        timestamp: new Date().toISOString(),
+        api_key_configured: !!GROQ_API_KEY
     });
 });
 
@@ -34,6 +44,8 @@ app.post('/api/chat', async (req, res) => {
         if (!GROQ_API_KEY) {
             return res.status(500).json({ error: 'API anahtarı bulunamadı' });
         }
+
+        console.log('Mesaj alındı:', message);
 
         // Groq API'ye istek
         const response = await fetch(GROQ_API_URL, {
@@ -68,9 +80,14 @@ app.post('/api/chat', async (req, res) => {
             });
         }
 
+        const reply = data.choices?.[0]?.message?.content || 'Cevap alınamadı';
+
+        console.log('Cevap:', reply);
+
         res.json({
-            reply: data.choices?.[0]?.message?.content || 'Cevap alınamadı',
-            model: 'openai/gpt-oss-120b'
+            reply: reply,
+            model: 'openai/gpt-oss-120b',
+            timestamp: new Date().toISOString()
         });
 
     } catch (error) {
@@ -79,11 +96,13 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-// Health check
-app.get('/health', (req, res) => {
-    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({ error: 'Endpoint bulunamadı' });
 });
 
+// Sunucuyu başlat
 app.listen(PORT, () => {
     console.log(`Backend ${PORT} portunda çalışıyor`);
+    console.log(`API key durumu: ${GROQ_API_KEY ? 'Tanımlı' : 'Tanımsız'}`);
 });

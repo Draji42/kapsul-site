@@ -459,7 +459,342 @@
             </div>
             <div class="chatbot-input">
                 <input type="text" id="chatInput" placeholder="Mesajınızı yazın..." onkeypress="handleChatKeyPress(event)">
+                <buttoa<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapsül Dijital Program Asistanı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon"><i class="fa-solid fa-capsules"></i></span>
+                    <span class="logo-text">Kapsül<br>Dijital Asistan</span>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-target="dashboard">
+                    <i class="fa-solid fa-house"></i> <span>Genel Bakış</span>
+                </button>
+                <button class="nav-item" data-target="programs">
+                    <i class="fa-solid fa-layer-group"></i> <span>Programlar</span>
+                </button>
+                <button class="nav-item" data-target="calendar">
+                    <i class="fa-solid fa-calendar-days"></i> <span>Eğitim Takvimi</span>
+                </button>
+                <button class="nav-item" data-target="attendance">
+                    <i class="fa-solid fa-clipboard-user"></i> <span>Katılım Durumu</span>
+                </button>
+                <button class="nav-item" data-target="certificate">
+                    <i class="fa-solid fa-award"></i> <span>Sertifika Süreci</span>
+                </button>
+                <button class="nav-item" data-target="faq">
+                    <i class="fa-solid fa-circle-question"></i> <span>Sık Sorulan Sorular</span>
+                </button>
+                <button class="nav-item" data-target="contact">
+                    <i class="fa-solid fa-address-book"></i> <span>İletişim & Randevu</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Profil">
+                    <div class="user-info">
+                        <span class="user-name">Öğrenci K-1024</span>
+                        <span class="user-role">Kapsül Akademi</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header glass-panel">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Program, eğitim veya soru arayın...">
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="notificationBtn" title="Bildirimler">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <button class="icon-btn" id="themeToggleBtn" title="Tema Değiştir">
+                        <i class="fa-solid fa-sun"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Views -->
+            <div class="views-container">
+                <!-- Dashboard View -->
+                <section id="dashboard" class="view-section active">
+                    <div class="hero-card premium-gradient">
+                        <div class="hero-content">
+                            <h1>Hoş Geldin, <span class="highlight">Kapsüllü!</span></h1>
+                            <p>Eğitim serüveninde ihtiyacın olan her şey burada. Yeni başlayan Rota programını inceleyebilir veya devamsızlık durumunu sorgulayabilirsin.</p>
+                            <button class="btn btn-primary" onclick="document.querySelector('.nav-item[data-target=\'programs\']').click()">Programları Keşfet</button>
+                        </div>
+                        <div class="hero-graphic">
+                            <i class="fa-solid fa-rocket fa-4x glowing-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                            <div class="stat-info">
+                                <h3>Sıradaki Eğitim</h3>
+                                <p>Yapay Zeka ve Veri Bilimi</p>
+                                <span>Bugün, 14:00</span>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon alert"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="stat-info">
+                                <h3>Katılım Oranı</h3>
+                                <p>%85</p>
+                                <span>Sertifika için yeterli seviyedesiniz.</span>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon success"><i class="fa-solid fa-check-double"></i></div>
+                            <div class="stat-info">
+                                <h3>Tamamlanan Görev</h3>
+                                <p>4 / 5</p>
+                                <span>Tasarım Lab Projesi</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Programs View -->
+                <section id="programs" class="view-section">
+                    <h2 class="section-title">Kapsül Programları & Laboratuvarlar</h2>
+                    <div class="cards-grid">
+                        <div class="program-card glass-panel">
+                            <div class="card-image bg-orange-gradient">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <h3>Kapsül Rota Gelişim</h3>
+                            <p>Yazılım, algoritma ve teknoloji okuryazarlığı temel eğitimleri.</p>
+                            <button class="btn btn-outline">Detayları Gör</button>
+                        </div>
+                        <div class="program-card glass-panel">
+                            <div class="card-image bg-blue-gradient">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <h3>Akıllı Şehirler Lab</h3>
+                            <p>IoT, gömülü sistemler ve sensör ağları üzerine uygulamalı çalışmalar.</p>
+                            <button class="btn btn-outline">Detayları Gör</button>
+                        </div>
+                        <div class="program-card glass-panel">
+                            <div class="card-image bg-green-gradient">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <h3>BİSTLAB (Fintek)</h3>
+                            <p>Finansal teknolojiler, blockchain ve veri analizi laboratuvarı.</p>
+                            <button class="btn btn-outline">Detayları Gör</button>
+                        </div>
+                        <div class="program-card glass-panel">
+                            <div class="card-image bg-purple-gradient">
+                                <i class="fa-solid fa-pen-nib"></i>
+                            </div>
+                            <h3>Tasarım Lab</h3>
+                            <p>UI/UX, endüstriyel tasarım ve yaratıcı süreçler laboratuvarı.</p>
+                            <button class="btn btn-outline">Detayları Gör</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Calendar View -->
+                <section id="calendar" class="view-section">
+                    <h2 class="section-title">Eğitim Takvimi</h2>
+                    <div class="calendar-container glass-panel">
+                        <div class="calendar-header">
+                            <h3>Ekim 2026</h3>
+                            <div class="calendar-nav">
+                                <button><i class="fa-solid fa-chevron-left"></i></button>
+                                <button><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid mock-calendar">
+                            <div class="day-header">Pt</div><div class="day-header">Sa</div><div class="day-header">Ça</div><div class="day-header">Pe</div><div class="day-header">Cu</div><div class="day-header">Ct</div><div class="day-header">Pz</div>
+                            <div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div>
+                            <div class="day event-day"><span class="event-dot"></span>5<div class="event-tooltip">IoT Atölyesi</div></div>
+                            <div class="day">6</div><div class="day">7</div><div class="day">8</div><div class="day">9</div><div class="day">10</div>
+                            <div class="day event-day"><span class="event-dot"></span>11<div class="event-tooltip">React Native Eğitimi</div></div>
+                            <div class="day">12</div><div class="day">13</div><div class="day">14</div><div class="day">15</div>
+                            <div class="day event-day"><span class="event-dot"></span>16<div class="event-tooltip">Tasarım Lab Toplantısı</div></div>
+                            <div class="day">17</div><div class="day">18</div><div class="day">19</div><div class="day">20</div>
+                            <div class="day">21</div><div class="day">22</div><div class="day">23</div><div class="day">24</div>
+                            <div class="day event-day"><span class="event-dot"></span>25<div class="event-tooltip">TEKNOFEST Başvuru Son Günü</div></div>
+                            <div class="day">26</div><div class="day">27</div><div class="day">28</div><div class="day">29</div><div class="day">30</div><div class="day">31</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Attendance View -->
+                <section id="attendance" class="view-section">
+                    <h2 class="section-title">Katılım Durumu Sorgulama</h2>
+                    <div class="attendance-checker glass-panel">
+                        <div class="input-group">
+                            <label>Öğrenci / Kapsül Numarası</label>
+                            <div class="search-box">
+                                <input type="text" id="studentIdInput" placeholder="Örn: K-1024">
+                                <button class="btn btn-primary" onclick="checkAttendance()">Sorgula</button>
+                            </div>
+                        </div>
+                        <div id="attendanceResult" class="attendance-result hidden">
+                            <div class="progress-ring-container">
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle class="progress-ring__circle bg" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                                    <circle id="progressCircle" class="progress-ring__circle" stroke="#FF5A00" stroke-width="8" fill="transparent" r="50" cx="60" cy="60" stroke-dasharray="314" stroke-dashoffset="60"/>
+                                </svg>
+                                <div class="progress-text">
+                                    <span id="attendancePercentage">%85</span>
+                                </div>
+                            </div>
+                            <div class="attendance-details">
+                                <h3>Harika gidiyorsun!</h3>
+                                <p>Sertifika almak için minimum %80 katılım şartını sağlıyorsun.</p>
+                                <ul>
+                                    <li>Toplam Ders: 40 Saat</li>
+                                    <li>Katılınan: 34 Saat</li>
+                                    <li>Devamsızlık: 6 Saat</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Certificate View -->
+                <section id="certificate" class="view-section">
+                    <h2 class="section-title">Sertifika Merkezi</h2>
+                    <div class="cert-generator glass-panel">
+                        <div class="cert-form">
+                            <h3>Sertifika Talebi</h3>
+                            <p>Programı başarıyla tamamladınız mı? Adınızı girerek e-sertifikanızı oluşturun.</p>
+                            <input type="text" id="certNameInput" placeholder="Adınız Soyadınız">
+                            <select id="certProgramSelect">
+                                <option>Kapsül Rota Gelişim Programı</option>
+                                <option>Akıllı Şehirler Lab Temel Eğitimi</option>
+                                <option>Veri Mühendisliği Okulu</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="generateCertificate()">Sertifika Oluştur</button>
+                        </div>
+                        <div class="cert-preview-container">
+                            <div id="certificatePreview" class="certificate-canvas hidden">
+                                <div class="cert-border">
+                                    <h4>KAPSÜL TEKNOLOJİ PLATFORMU</h4>
+                                    <h1>BAŞARI SERTİFİKASI</h1>
+                                    <p>Bu sertifika,</p>
+                                    <h2 id="certNameDisplay">İsim Soyisim</h2>
+                                    <p>adlı katılımcıya,</p>
+                                    <h3 id="certProgramDisplay">Program Adı</h3>
+                                    <p>eğitimini başarıyla tamamladığı için verilmiştir.</p>
+                                    <div class="cert-footer">
+                                        <div class="signature">Tarih: <br> Ekim 2026</div>
+                                        <i class="fa-solid fa-capsules fa-3x" style="color:#FF5A00"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ View -->
+                <section id="faq" class="view-section">
+                    <h2 class="section-title">Sık Sorulan Sorular</h2>
+                    <div class="accordion">
+                        <div class="accordion-item glass-panel">
+                            <button class="accordion-header">Sertifika almak için devam zorunluluğu yüzde kaçtır?</button>
+                            <div class="accordion-content">
+                                <p>Eğitim programlarımızda başarılı sayılıp sertifika almaya hak kazanmak için en az %80 devam zorunluluğu bulunmaktadır.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item glass-panel">
+                            <button class="accordion-header">TEKNOFEST takımlarına nasıl katılabilirim?</button>
+                            <div class="accordion-content">
+                                <p>Yılın belirli dönemlerinde açılan Terminal Çağrı Programı'na başvurarak takımlara katılabilir veya kendi takımınızı kurup donanım/ofis desteği talep edebilirsiniz.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item glass-panel">
+                            <button class="accordion-header">Laboratuvarları ne zaman kullanabilirim?</button>
+                            <div class="accordion-content">
+                                <p>Zindankale Yerleşkemizdeki laboratuvarlar, kayıtlı öğrencilerimiz ve takımlarımız için hafta içi 09:00 - 22:00, hafta sonu 10:00 - 20:00 saatleri arasında açıktır.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact View -->
+                <section id="contact" class="view-section">
+                    <h2 class="section-title">İletişim & Mentör Randevusu</h2>
+                    <div class="contact-grid">
+                        <div class="contact-form glass-panel">
+                            <h3>Bize Ulaşın</h3>
+                            <input type="text" placeholder="Adınız Soyadınız">
+                            <input type="email" placeholder="E-posta Adresiniz">
+                            <textarea placeholder="Mesajınız" rows="4"></textarea>
+                            <button class="btn btn-primary">Gönder</button>
+                        </div>
+                        <div class="contact-info glass-panel">
+                            <h3>Yerleşke Bilgileri</h3>
+                            <p><i class="fa-solid fa-location-dot"></i> Zindankale Yerleşkesi, Selçuklu, Konya</p>
+                            <p><i class="fa-solid fa-envelope"></i> iletisim@kapsul.org.tr</p>
+                            <p><i class="fa-solid fa-globe"></i> www.kapsul.org.tr</p>
+                            <div class="map-placeholder">
+                                <i class="fa-solid fa-map-location-dot fa-3x"></i>
+                                <p>Haritada Görüntüle</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Chatbot Widget -->
+    <div class="chatbot-widget" id="chatbotWidget">
+        <button class="chatbot-toggle" onclick="toggleChat()" id="chatbotToggleBtn">
+            <i class="fa-solid fa-comment-dots"></i>
+        </button>
+        <div class="chatbot-window glass-panel hidden" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div>
+                    <h4>Kapsül Dijital Asistan</h4>
+                    <span class="status"><span class="status-dot"></span> Çevrimiçi</span>
+                </div>
+                <button class="close-btn" onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <p>Merhaba! Ben Kapsül Dijital Asistanı. Eğitimler, takvim, devamsızlık durumu veya sertifikalar hakkında sana nasıl yardımcı olabilirim?</p>
+                </div>
+                <div class="chat-chips">
+                    <span class="chip" onclick="sendChipMessage('Devamsızlığımı nasıl öğrenirim?')">Devamsızlığımı öğren</span>
+                    <span class="chip" onclick="sendChipMessage('Sertifika şartları nelerdir?')">Sertifika şartları</span>
+                    <span class="chip" onclick="sendChipMessage('Eğitim takvimi')">Eğitim takvimi</span>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatInput" placeholder="Mesajınızı yazın..." onkeypress="handleChatKeyPress(event)">
                 <button onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>n onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
     </div>

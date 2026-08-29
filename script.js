@@ -568,6 +568,7 @@ function appendMessage(text, sender) {
 }
 
 // Chatbot Logic - Render Backend ile
+// Chatbot Logic - Render Backend ile
 async function processBotResponse(userText) {
     console.log('Bot yanıtı işleniyor:', userText);
     
@@ -575,7 +576,7 @@ async function processBotResponse(userText) {
     
     try {
         // Render backend'e istek at
-        const response = await fetch('https://kapsul-backend.onrender.com/api/chat', {
+        const response = await fetch('https://kapsul-site.onrender.com/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -602,6 +603,6 @@ async function processBotResponse(userText) {
         const fallbackReply = getFallbackResponse(userText);
         appendMessage(fallbackReply, 'bot');
         
-        showToast('AI servisi şu anda uyuyor, temel yanıtlar veriliyor.');
+        showToast('AI servisi uyanıyor, temel yanıtlar veriliyor.');
     }
 }
