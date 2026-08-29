@@ -16,7 +16,7 @@ let currentUser = {
 };
 let isLightTheme = false;
 
-// Mock Program Data
+// Mocks Program Data
 const programsData = {
     1: {
         title: "Kapsül Rota Gelişim",
