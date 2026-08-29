@@ -568,7 +568,7 @@ function appendMessage(text, sender) {
 }
 
 async function processBotResponse(userText) {
-    console.log('Bot yanıtı işleniyor:', userText);
+    console.log('Mesaj gönderiliyor:', userText);
     
     showTypingIndicator();
     
@@ -584,20 +584,19 @@ async function processBotResponse(userText) {
         });
 
         const data = await response.json();
+        console.log('Backend cevabı:', data);
         
         removeTypingIndicator();
         
         if (data.reply) {
             appendMessage(data.reply, 'bot');
         } else {
-            throw new Error(data.error || 'Cevap alınamadı');
+            appendMessage('Cevap alınamadı', 'bot');
         }
 
     } catch (error) {
-        console.error('Chat hatası:', error);
+        console.error('Hata:', error);
         removeTypingIndicator();
-        
-        const fallbackReply = getFallbackResponse(userText);
-        appendMessage(fallbackReply, 'bot');
+        appendMessage(getFallbackResponse(userText), 'bot');
     }
 }
